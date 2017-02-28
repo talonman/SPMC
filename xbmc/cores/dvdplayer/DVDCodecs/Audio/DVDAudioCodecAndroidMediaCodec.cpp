@@ -156,7 +156,6 @@ bool CDVDAudioCodecAndroidMediaCodec::Open(CDVDStreamInfo &hints, CDVDCodecOptio
   if (m_crypto)
     AMediaCrypto_delete( m_crypto);
 
-  bool needSecureDecoder = false;
   if (m_hints.cryptoSession)
   {
     CLog::Log(LOGDEBUG, "CDVDAudioCodecAndroidMediaCodec::Open Initializing MediaCrypto");
@@ -176,7 +175,6 @@ bool CDVDAudioCodecAndroidMediaCodec::Open(CDVDStreamInfo &hints, CDVDCodecOptio
       CLog::Log(LOGERROR, "CDVDAudioCodecAndroidMediaCodec: Cannot initilize crypto");
       return false;
     }
-    needSecureDecoder = true;
   }
   else
     m_crypto = nullptr;
@@ -198,12 +196,6 @@ bool CDVDAudioCodecAndroidMediaCodec::Open(CDVDStreamInfo &hints, CDVDCodecOptio
       xbmc_jnienv()->ExceptionClear();
       continue;
     }
-
-    if (needSecureDecoder)
-      m_codecname += ".secure";
-// Not 100% working, yet
-//    if (needSecureDecoder && !codec_caps.isFeatureSupported(CJNIMediaCodecInfoCodecCapabilities::FEATURE_SecurePlayback))
-//      continue;
 
     std::vector<std::string> types = codec_info.getSupportedTypes();
     // return the 1st one we find, that one is typically 'the best'
