@@ -256,7 +256,7 @@ int CDVDAudioCodecAndroidMediaCodec::Decode(const DemuxPacket &packet)
 {
   int rtn = 0;
 
-  unsigned char* pData = packet.pData;
+  unsigned char* pData = packet.pData + packet.offset;
   int iSize = packet.iSize;
   double pts = packet.pts;
   double dts = packet.dts;
@@ -266,7 +266,7 @@ int CDVDAudioCodecAndroidMediaCodec::Decode(const DemuxPacket &packet)
     // Check if we have a saved buffer
     if (m_demux_pkt.pData)
     {
-      pData = m_demux_pkt.pData;
+      pData = m_demux_pkt.pData + m_demux_pkt.offset;
       iSize = m_demux_pkt.iSize;
     }
   }
